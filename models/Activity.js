@@ -9,7 +9,7 @@ var activitySchema = new Schema({
     required: true
   },
   statistics: {
-    activityDate: {
+    datePerformed: {
       type: String,
       required: true,
       default: Date.now
