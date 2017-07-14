@@ -9,14 +9,18 @@ var activitySchema = new Schema({
     required: true
   },
   statistics: {
-    datePerformed: {
+    unitOfMeasurement: {
       type: String,
-      required: true,
-      default: Date.now
+      required: true
     },
     volume: {
       type: Number,
       required: true
+    },
+    datePerformed: {
+      type: String,
+      required: true,
+      default: Date.now
     }
   }
 });

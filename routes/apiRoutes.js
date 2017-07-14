@@ -1,13 +1,27 @@
 const express = require("express");
 const apiRouter = express.Router();
-const activityModel = require("../models/Activity");
+const Activity = require("../models/Activity");
 
 apiRouter.get("/activities", (req, res) => {
-  res.send("activities page");
+  Activity.find()
+    .then(foundActivities => {
+      res.json(foundActivities);
+    })
+    .catch(err => {
+      res.status(500).send(err);
+    });
 });
 
 apiRouter.post("/activities", (req, res) => {
-  res.send("you are posting to activities page");
+  let newActivity = new Activity(req.body);
+  newActivity
+    .save()
+    .then(savedActivity => {
+      res.json(savedActivity);
+    })
+    .catch(err => {
+      res.status(500).send(err);
+    });
 });
 
 apiRouter.get("/activities/:id", (req, res) => {
