@@ -12,6 +12,8 @@
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
+    "express-session": "^1.15.3",
+    "express-validator": "^3.2.1",
     "mongodb": "^2.2.30",
     "mongoose": "^4.11.1",
     "morgan": "^1.8.2"
