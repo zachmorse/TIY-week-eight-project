@@ -11,7 +11,7 @@ const apiRouter = require("./routes/apiRoutes");
 const checkAuth = require("./middleware/checkAuth");
 const loginRouter = require("./routes/loginRoute");
 
-// database connection:
+// --- database connection:
 
 mongoose.connect(dbURL).then(function(err, db) {
   if (err) {
@@ -20,18 +20,18 @@ mongoose.connect(dbURL).then(function(err, db) {
   console.log("Connected to Moongoose DB: statTracker");
 });
 
-// middleware:
+// --- middleware:
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(logger("dev"));
 
-// routes:
+// --- routes:
 
 app.use("/login", loginRouter);
 app.use("/api/", checkAuth, apiRouter);
 
-// listener:
+// --- listener:
 
 app.listen(port, () => {
   console.log(`server running on port ${port}`);

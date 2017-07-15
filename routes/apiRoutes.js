@@ -25,7 +25,13 @@ apiRouter.post("/activities", (req, res) => {
 });
 
 apiRouter.get("/activities/:id", (req, res) => {
-  res.send("you are getting a single activity by id");
+  Activity.findById(req.params.id)
+    .then(foundActivity => {
+      res.json(foundActivity);
+    })
+    .catch(err => {
+      res.status(500).send(err);
+    });
 });
 
 apiRouter.put("/activities/:id", (req, res) => {
@@ -33,7 +39,13 @@ apiRouter.put("/activities/:id", (req, res) => {
 });
 
 apiRouter.delete("/activities/:id", (req, res) => {
-  res.send("you are deleting a single activity by id");
+  Activity.deleteOne({ _id: req.params.id })
+    .then(() => {
+      res.send("Deleted Record");
+    })
+    .catch(err => {
+      res.status(500).send(err);
+    });
 });
 
 apiRouter.post("/activities/:id/stats", (req, res) => {
