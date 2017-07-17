@@ -28,7 +28,6 @@ app.use(logger("dev"));
 
 // --- routes:
 
-app.use("/login", loginRouter);
 app.use("/api/", checkAuth, apiRouter);
 
 // --- listener:

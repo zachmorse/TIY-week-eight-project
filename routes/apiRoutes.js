@@ -35,7 +35,13 @@ apiRouter.get("/activities/:id", (req, res) => {
 });
 
 apiRouter.put("/activities/:id", (req, res) => {
-  res.send("you are updating a single activity by id");
+  Activity.updateOne({ _id: req.params.id }, req.body)
+    .then(updatedActivity => {
+      res.send(updatedActivity);
+    })
+    .catch(err => {
+      res.status(500).send(err);
+    });
 });
 
 apiRouter.delete("/activities/:id", (req, res) => {
@@ -48,9 +54,47 @@ apiRouter.delete("/activities/:id", (req, res) => {
     });
 });
 
+//{ "datePerformed": "2017/05/25", "volume": 10}
+
 apiRouter.post("/activities/:id/stats", (req, res) => {
-  res.send("You are adding tracked data for a given day and exercise");
+  Activity.findOne({ _id: req.params.id }).then(statToUpdate => {
+    var statToUpdate = {
+      activity: statToUpdate.activity,
+      stat: {
+        date: req.body.date,
+        value: req.body.value
+      }
+    };
+    Stat.updateOne({ _id: req.params.id }, statToUpdate);
+    res.send({ statToUpdate });
+  });
 });
+
+// apiRouter.post("/activities/:id/stats", (req, res) => {
+//   Activity.findById({ _id: req.params.id }).then(foundActivity => {
+//     foundActivity.statistics.push(req.body);
+//     foundActivity
+//       .save()
+//       .then(result => {
+//         res.json(result);
+//       })
+//       .catch(err => {
+//         res.status(500).send(err);
+//       });
+//   });
+// });
+
+//   let activityData = req.body;
+//   let newActivity = new Activity(activityData);
+//   newActivity
+//     .save()
+//     .then(savedActivity => {
+//       res.send(savedActivity);
+//     })
+//     .catch(err => {
+//       res.status(500).send(err);
+//     });
+// });
 
 apiRouter.delete("/stats/:id", (req, res) => {
   res.send("you are deleting a days worth of stats for a given activity");

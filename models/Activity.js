@@ -8,21 +8,23 @@ var activitySchema = new Schema({
     type: String,
     required: true
   },
-  statistics: {
-    unitOfMeasurement: {
-      type: String,
-      required: true
-    },
-    volume: {
-      type: Number,
-      required: true
-    },
-    datePerformed: {
-      type: String,
-      required: true,
-      default: Date.now
+  statistics: [
+    {
+      datePerformed: {
+        type: String,
+        required: true,
+        default: Date.now
+      },
+      unitOfMeasurement: {
+        type: String,
+        required: true
+      },
+      volume: {
+        type: Number,
+        required: true
+      }
     }
-  }
+  ]
 });
 
 var Activity = mongoose.model("Activity", activitySchema);
