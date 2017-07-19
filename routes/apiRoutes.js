@@ -73,8 +73,8 @@ apiRouter.post("/activities/:id/stats", (req, res) => {
   });
 });
 
-apiRouter.delete("/stats/:id", (req, res) => {
-  Activity.findByIdAndUpdate(req.params.id, {
+apiRouter.delete("/activities/:activityid/stats/:id", (req, res) => {
+  Activity.findByIdAndUpdate(req.params.activityid, {
     $pull: { statistics: { _id: req.params.id } }
   })
     .then(deletedRecord => {
