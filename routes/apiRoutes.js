@@ -57,47 +57,32 @@ apiRouter.delete("/activities/:id", (req, res) => {
 //{ "datePerformed": "2017/05/25", "volume": 10}
 
 apiRouter.post("/activities/:id/stats", (req, res) => {
-  Activity.findOne({ _id: req.params.id }).then(statToUpdate => {
-    var statToUpdate = {
-      activity: statToUpdate.activity,
-      stat: {
-        date: req.body.date,
-        value: req.body.value
-      }
-    };
-    Stat.updateOne({ _id: req.params.id }, statToUpdate);
-    res.send({ statToUpdate });
+  Activity.findByIdAndUpdate(
+    { _id: req.params.id },
+    { $push: req.body },
+    { upsert: true }
+  ).then(updatedStat => {
+    updatedStat
+      .save()
+      .then(newestStat => {
+        res.send(newestStat);
+      })
+      .catch(err => {
+        res.status(500).send(err);
+      });
   });
 });
 
-// apiRouter.post("/activities/:id/stats", (req, res) => {
-//   Activity.findById({ _id: req.params.id }).then(foundActivity => {
-//     foundActivity.statistics.push(req.body);
-//     foundActivity
-//       .save()
-//       .then(result => {
-//         res.json(result);
-//       })
-//       .catch(err => {
-//         res.status(500).send(err);
-//       });
-//   });
-// });
-
-//   let activityData = req.body;
-//   let newActivity = new Activity(activityData);
-//   newActivity
-//     .save()
-//     .then(savedActivity => {
-//       res.send(savedActivity);
-//     })
-//     .catch(err => {
-//       res.status(500).send(err);
-//     });
-// });
-
 apiRouter.delete("/stats/:id", (req, res) => {
-  res.send("you are deleting a days worth of stats for a given activity");
+  Activity.findByIdAndUpdate(req.params.id, {
+    $pull: { statistics: { _id: req.params.id } }
+  })
+    .then(deletedRecord => {
+      res.send("deleted activity record.");
+    })
+    .catch(err => {
+      res.status(500).send(err);
+    });
 });
 
 module.exports = apiRouter;

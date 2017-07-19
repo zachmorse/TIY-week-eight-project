@@ -9,7 +9,6 @@ const port = process.env.PORT || 8080;
 const dbURL = "mongodb://localhost:27017/statTracker";
 const apiRouter = require("./routes/apiRoutes");
 const checkAuth = require("./middleware/checkAuth");
-const loginRouter = require("./routes/loginRoute");
 
 // --- database connection:
 
